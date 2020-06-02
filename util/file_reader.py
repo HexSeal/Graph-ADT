@@ -15,18 +15,27 @@ def read_graph_from_file(filename):
     """
 
     # TODO: Use 'open' to open the file
+    f = open(filename, "r")
 
     # TODO: Use the first line (G or D) to determine whether graph is directed 
     # and create a graph object
+    if f.readline() == "G":
+        graph = Graph(False)
+        
+    elif f.readline() == "D":
+        graph = Graph()
+        
+    else:
+        print("Invalid Input")
 
     # TODO: Use the second line to add the vertices to the graph
 
-    # TODO: Use the 3rd+ line to add the edges to the graph
 
-    pass
+    # TODO: Use the 3rd+ line to add the edges to the graph
+    
+    f.close()
 
 if __name__ == '__main__':
-
     graph = read_graph_from_file('test.txt')
 
     print(graph)
