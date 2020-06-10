@@ -88,7 +88,7 @@ class Graph:
         vertex_id2 (string): The unique identifier of the second vertex.
         """
         vertex1 = self.get_vertex(vertex_id1)
-        vertex2 = self.get_vertex(vertex_id1)
+        vertex2 = self.get_vertex(vertex_id2)
         
         if self.__is_directed == True:
             vertex1.add_neighbor(vertex2)
@@ -204,4 +204,41 @@ class Graph:
         Returns:
         list<string>: All vertex ids that are `target_distance` away from the start vertex
         """
+        pass
+
+    def is_bipartite(self):
+        """
+        Return True if the graph is bipartite, and False otherwise.
+        """
+        pass
+    
+    def get_connected_components(self):
+        """
+        Return a list of all connected components, with each connected component
+        represented as a list of vertex ids.
+        """
+        pass
+    
+    def find_path_dfs_iter(self, start_id, target_id):
+        """
+        Use DFS with a stack to find a path from start_id to target_id.
+        """
+        pass
+
+    def contains_cycle(self):
+        """
+        Return True if the directed graph contains a cycle, False otherwise.
+        """
+        pass
+    
+    def topological_sort(self):
+        """
+        Return a valid ordering of vertices in a directed acyclic graph.
+        If the graph contains a cycle, throw a ValueError.
+        """
+        # TODO: Create a stack to hold the vertex ordering.
+        # TODO: For each unvisited vertex, execute a DFS from that vertex.
+        # TODO: On the way back up the recursion tree (that is, after visiting a 
+        # vertex's neighbors), add the vertex to the stack.
+        # TODO: Reverse the contents of the stack and return it as a valid ordering.
         pass

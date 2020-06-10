@@ -14,39 +14,42 @@ def read_graph_from_file(filename):
     vertices and edges
     """
 
-    # TODO: Use 'open' to open the file
+    # Use 'open' to open the file
     f = open(filename, "r")
 
-    # TODO: Use the first line (G or D) to determine whether graph is directed 
+    # Use the first line (G or D) to determine whether graph is directed 
     # and create a graph object
-    lines = f.readlines()
-    if lines[1] == "G":
+    first_line = f.readline().strip()
+    graph = Graph(False)
+    
+    # If undirected
+    if  first_line == "G":
         graph = Graph(False)
-        
-    elif lines[1] == "D":
+    
+    # If directed
+    elif first_line == "D":
         graph = Graph()
         
     else:
         print("Invalid Input")
+        print(first_line)
 
-    # TODO: Use the second line to add the vertices to the graph
-    vertices = f.readline(lines[2])
+    # Use the second line to add the vertices to the graph
+    vertices = f.readline()
     for _ in vertices:
         graph.add_vertex(_)
 
     # TODO: Use the 3rd+ line to add the edges to the graph
-    for line in lines:
-        if line > 2:
-            curr = f.readlines(line)
-            vert1 = f.readline(curr[1])
-            vert2 = f.readline(curr[2])
-            
-            graph.add_edge(vert1, vert2)
+    for x in f:
+        curr = f.readline().strip('( )')
+        vert = curr.split(',', 2)
+        print(vert)
+        
+        vert1 = graph.add_vertex(vert[0])
+        vert2 = graph.add_vertex(vert[1])
+        print(vert1, vert2)
+        
+        graph.add_edge(vert1, vert2)
             
     f.close()
     return graph
-
-if __name__ == '__main__':
-    graph = read_graph_from_file('test.txt')
-
-    print(graph)
