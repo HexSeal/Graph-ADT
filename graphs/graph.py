@@ -92,6 +92,7 @@ class Graph:
         
         if self.__is_directed == True:
             vertex1.add_neighbor(vertex2)
+            
         else:
             vertex1.add_neighbor(vertex2)
             vertex2.add_neighbor(vertex1)

@@ -40,16 +40,18 @@ def read_graph_from_file(filename):
         graph.add_vertex(_)
 
     # TODO: Use the 3rd+ line to add the edges to the graph
-    for x in f:
-        curr = f.readline().strip('( )')
+    for _ in f:
+        curr = f.readline().replace('(', '')
+        curr = curr.replace(')', '')
+        
         vert = curr.split(',', 2)
-        print(vert)
         
         vert1 = graph.add_vertex(vert[0])
         vert2 = graph.add_vertex(vert[1])
-        print(vert1, vert2)
+        # print(vert2)
+        # print(vert1, vert2)
         
         graph.add_edge(vert1, vert2)
-            
+        
     f.close()
     return graph
