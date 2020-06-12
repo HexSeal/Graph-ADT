@@ -68,7 +68,6 @@ class Graph:
         Vertex: The new vertex object.
         """
         self.__vertex_dict[vertex_id] = Vertex(vertex_id)
-        
         return self.__vertex_dict[vertex_id]
         
     def get_vertex(self, vertex_id):
@@ -89,12 +88,10 @@ class Graph:
         """
         vertex1 = self.get_vertex(vertex_id1)
         vertex2 = self.get_vertex(vertex_id2)
+        # print("Vertex Id 1 {} Vertex Id 2 {}".format(vertex_id1, vertex_id2))
+        vertex1.add_neighbor(vertex2)
         
-        if self.__is_directed == True:
-            vertex1.add_neighbor(vertex2)
-            
-        else:
-            vertex1.add_neighbor(vertex2)
+        if self.__is_directed == False:
             vertex2.add_neighbor(vertex1)
         
     def get_vertices(self):
@@ -205,13 +202,72 @@ class Graph:
         Returns:
         list<string>: All vertex ids that are `target_distance` away from the start vertex
         """
-        pass
+        queue = deque()
+        visited = set()
+        
+        queue.append(self.get_vertex(start_id))
+        
+        for _ in range(target_distance):
+            for _ in range(len(queue)):
+                vertex = queue.pop()
+                if vertex not in visited:
+                    for neighbor in vertex.get_neighbors():
+                        queue.appendleft(neighbor)
+                    visited.add(vertex)
+        
+        found = []
+        for vertex in queue:
+            if vertex not in visited and vertex.get_id() not in found:
+                found.append(vertex.get_id())
+                
+        return found
 
-    def is_bipartite(self):
+    def is_bipartite(self, start):
         """
         Return True if the graph is bipartite, and False otherwise.
         """
-        pass
+        # Get the starting vertex
+        root = self.get_vertex(start)
+        
+        # Start the queue and first object
+        queue = deque()
+        queue.append(root)
+        
+        # Keep count of the visited vertices so we don't check them twice
+        visited = set()
+        
+        # Instantiate a red set and blue set
+        red = set()
+        blue = set()
+        
+        i = 0
+        
+        # Set the root for red to build from
+        red.add(root)
+        
+        while queue:
+            color_set, opp_set = (red, blue) if i % 2 == 0 else (blue, red)
+            
+            for _ in range(len(queue)):
+                # Get the next vertex
+                vertex = queue.popleft()
+                visited.add(vertex)
+
+                # Go through each neighbor from the vertex and add it into the corresponding set
+                for neighbor in vertex.get_neighbors():
+                    # Only add the neighboring vertex if it has not been visited
+                    if neighbor not in visited:
+                        queue.append(neighbor)
+                        
+                    # If it's the same color, return False
+                    if neighbor in color_set:
+                        return False
+                    
+                    # add the neighboring vertexes into the opposite color set
+                    opp_set.add(neighbor)
+            i += 1
+        # Otherwise, the graph is bipartite
+        return True
     
     def get_connected_components(self):
         """
@@ -225,6 +281,25 @@ class Graph:
         Use DFS with a stack to find a path from start_id to target_id.
         """
         pass
+    
+    def dfs_traversal(self, start_id):
+        """Visit each vertex, starting with start_id, in DFS order."""
+
+        visited = set() # set of vertices we've visited so far
+
+        def dfs_traversal_recursive(start_vertex):
+            print(f'Visiting vertex {start_vertex.get_id()}')
+
+            # recurse for each vertex in neighbors
+            for neighbor in start_vertex.get_neighbors():
+                if neighbor.get_id() not in visited:
+                    visited.add(neighbor.get_id())
+                    dfs_traversal_recursive(neighbor)
+            return
+
+        visited.add(start_id)
+        start_vertex = self.get_vertex(start_id)
+        dfs_traversal_recursive(start_vertex)
 
     def contains_cycle(self):
         """
@@ -237,9 +312,17 @@ class Graph:
         Return a valid ordering of vertices in a directed acyclic graph.
         If the graph contains a cycle, throw a ValueError.
         """
-        # TODO: Create a stack to hold the vertex ordering.
+        # Create a stack to hold the vertex ordering.
+        stack = deque()
+        
         # TODO: For each unvisited vertex, execute a DFS from that vertex.
+        if self.contains_cycle():
+            raise ValueError("Contains Cycle")
+        
+        for vertex in self.__vertex_dict.keys():
+            dfs_traversal(vertex)
+            
+        
         # TODO: On the way back up the recursion tree (that is, after visiting a 
         # vertex's neighbors), add the vertex to the stack.
         # TODO: Reverse the contents of the stack and return it as a valid ordering.
-        pass

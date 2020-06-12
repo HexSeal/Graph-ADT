@@ -35,23 +35,22 @@ def read_graph_from_file(filename):
         print(first_line)
 
     # Use the second line to add the vertices to the graph
-    vertices = f.readline()
+    vertices = f.readline().strip()
     for _ in vertices:
         graph.add_vertex(_)
 
     # TODO: Use the 3rd+ line to add the edges to the graph
     for _ in f:
         curr = f.readline().replace('(', '')
-        curr = curr.replace(')', '')
+        curr = curr.replace(')', '').strip()
+        print("Current line: {}".format(curr))
         
-        vert = curr.split(',', 2)
-        
-        vert1 = graph.add_vertex(vert[0])
-        vert2 = graph.add_vertex(vert[1])
-        # print(vert2)
-        # print(vert1, vert2)
-        
-        graph.add_edge(vert1, vert2)
+        if curr:
+            vert1 = graph.add_vertex(curr[0])
+            vert2 = graph.add_vertex(curr[2])
+            # print("Vert 1: {} Vert 2: {}".format(vert1, vert2))
+            
+            graph.add_edge(vert1.get_id(), vert2.get_id())
         
     f.close()
     return graph
