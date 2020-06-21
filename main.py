@@ -8,26 +8,34 @@ if __name__ == '__main__':
 
     # Create the graph
 
-    graph = Graph(is_directed=True)
+    graph = Graph(is_directed=False)
 
     # Add some vertices
-    # graph.add_vertex('A')
-    # graph.add_vertex('E')
-    # graph.add_vertex('B')
-    # graph.add_vertex('C')
-    # graph.add_vertex('D')
-    # graph.add_vertex('F')
-    # graph.add_vertex('G')
+    graph.add_vertex('A')
+    graph.add_vertex('E')
+    graph.add_vertex('B')
+    graph.add_vertex('C')
+    graph.add_vertex('D')
+    graph.add_vertex('F')
+    graph.add_vertex('G')
 
     # Add connections
-    # graph.add_edge('A', 'B')
-    # graph.add_edge('B', 'C')
-    # graph.add_edge('B', 'D')
-    # graph.add_edge('D', 'E')
-    # graph.add_edge('F', 'G')
+    graph.add_edge('A', 'B')
+    graph.add_edge('B', 'C')
+    graph.add_edge('B', 'D')
+    graph.add_edge('D', 'E')
+    graph.add_edge('F', 'G')
+    # graph.add_edge('C', 'A')
+    print(graph.is_bipartite('A'))
+    
+    # Show the connected components
+    print("Edges: {}".format(graph.get_connected_components()))
+    
+    # Show a path from one vertex to another, should be ABDE
+    # print("Path from vertex A to E: {}".format(graph.find_path_dfs_iter('A', 'E')))
 
     # Or, read a graph in from a file
-    graph = read_graph_from_file('test_files/graph_small_directed.txt')
+    # graph = read_graph_from_file('test_files/graph_small_directed.txt')
 
     # Output the vertices & edges
     # Print vertices

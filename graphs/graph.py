@@ -1,4 +1,5 @@
 from collections import deque
+import random
 
 class Vertex(object):
     """
@@ -246,41 +247,114 @@ class Graph:
         red.add(root)
         
         while queue:
-            color_set, opp_set = (red, blue) if i % 2 == 0 else (blue, red)
+            color_set = []
+            opp_set = []
             
-            for _ in range(len(queue)):
-                # Get the next vertex
-                vertex = queue.popleft()
-                visited.add(vertex)
+            # Get the color from whatever we pop off the queue
+            # Get the next vertex
+            vertex = queue.popleft()
+            if vertex in red:
+                color_set, opp_set = red, blue
+            else: 
+                color_set, opp_set = blue, red
+                
+            
+            visited.add(vertex)
 
-                # Go through each neighbor from the vertex and add it into the corresponding set
-                for neighbor in vertex.get_neighbors():
-                    # Only add the neighboring vertex if it has not been visited
-                    if neighbor not in visited:
-                        queue.append(neighbor)
-                        
-                    # If it's the same color, return False
-                    if neighbor in color_set:
-                        return False
+            # Go through each neighbor from the vertex and add it into the corresponding set
+            for neighbor in vertex.get_neighbors():
+                # Only add the neighboring vertex if it has not been visited
+                if neighbor not in visited:
+                    queue.append(neighbor)
                     
-                    # add the neighboring vertexes into the opposite color set
-                    opp_set.add(neighbor)
+                # If it's the same color, return False
+                if neighbor in color_set:
+                    return False
+                
+                # add the neighboring vertexes into the opposite color set
+                opp_set.add(neighbor)
             i += 1
         # Otherwise, the graph is bipartite
         return True
     
+    # Got some of this from @github.com/squeaky1273
     def get_connected_components(self):
         """
         Return a list of all connected components, with each connected component
         represented as a list of vertex ids.
         """
-        pass
+        visited = []
+        connections = []
+        queue = deque()
+        
+        keys = list(self.__vertex_dict.keys())
+        current = random.choice(keys)
+        visited.append(current)
+        queue.append(current)
+        
+        # While there's still vertexes in the queue
+        while queue:
+            # Get the next vertex
+            current = queue.pop()
+            connections.append(current)
+            
+            # Get the neighbors for the current node
+            neighbors = self.get_vertex(current).get_neighbors()
+            
+            # Go through all the neighbors and append them to the current vertex's list[Not working, returning list of vertices]
+            for neighbor in neighbors:
+                if neighbor.get_id() not in visited:
+                    visited.append(neighbor.get_id())
+                    connections.append(neighbor.get_id())
+            
+            # If we've gone through all the connections
+            if len(visited) == len(keys):
+                return connections
+            
+            not_visited = [vertex for vertex in keys if vertex not in visited]
+            
+            current = random.choice(not_visited)
+            
+            visited.append(current)
+            queue.append(current)
+        
+        return connections
+            
     
     def find_path_dfs_iter(self, start_id, target_id):
         """
         Use DFS with a stack to find a path from start_id to target_id.
         """
-        pass
+        # Start by adding the start to the visited
+        visited = {start_id: [start_id]}
+        
+        # Create a stack for DFS
+        stack = set()
+        stack.add(self.get_vertex(start_id))
+        
+        while stack:
+            # Start off by getting a vertex
+            vertex = stack.pop() 
+            vert_id = vertex.get_id()
+            
+            # Get all the neighbors for the current vertex
+            neighbors = vertex.get_neighbors()
+            
+            # Edge case
+            if vert_id == target_id:
+                break
+            
+            # Build the path
+            for neighbor in neighbors:
+                n_id = neighbor.get_id()
+                
+                if n_id not in visited:
+                    stack.add(neighbor)
+                    path = visited[vert_id]
+                    path = path + [n_id]
+                    visited[n_id] = path
+        
+        return visited[target_id]
     
     def dfs_traversal(self, start_id):
         """Visit each vertex, starting with start_id, in DFS order."""
@@ -301,11 +375,27 @@ class Graph:
         start_vertex = self.get_vertex(start_id)
         dfs_traversal_recursive(start_vertex)
 
-    def contains_cycle(self):
+    def contains_cycle(self, visited=set(), stack=set()):
         """
         Return True if the directed graph contains a cycle, False otherwise.
         """
-        pass
+        # if visited == None:
+        #     visited = set()
+        #     stack = set()
+        
+        # Go through the graph and check if nodes are visited. 
+        for v in graph:
+            # If they aren't but in the stack we keep checking, otherwise it contains cycle
+            if v not in visited:
+                if v in stack:
+                    return True
+            stack.add(v)
+            
+            for n in v.get_neighbors():
+                if n not in visited:
+                    if contains_cycle(visited, ):
+                        pass
+            
     
     def topological_sort(self):
         """
@@ -326,3 +416,4 @@ class Graph:
         # TODO: On the way back up the recursion tree (that is, after visiting a 
         # vertex's neighbors), add the vertex to the stack.
         # TODO: Reverse the contents of the stack and return it as a valid ordering.
+        
