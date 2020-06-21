@@ -375,27 +375,47 @@ class Graph:
         start_vertex = self.get_vertex(start_id)
         dfs_traversal_recursive(start_vertex)
 
-    def contains_cycle(self, visited=set(), stack=set()):
+    def cycle_helper(self, vertex, visited, stack):
+        """Goes through the neighbors of a vertex and determines if it contains a cycle. 
+        This is better as a helper function because it needs to be run once for each vertex"""
+        
+        cycle = False
+        visited.add(vertex)
+        stack.append(vertex)
+        neighbors = vertex.get_neighbors()
+        
+        for neighbor in neighbors:
+            # If it's not already visited, check it's paths for a cycle
+            if neighbor not in visited:
+                cycle = self.cycle_helper(neighbor, visited, stack)
+            
+            # Otherwise, it contains a cycle
+            elif neighbor in stack:
+                return True
+            
+        stack.remove(vertex)
+        
+        if cycle == True:
+            return True
+
+    def contains_cycle(self):
         """
         Return True if the directed graph contains a cycle, False otherwise.
         """
-        # if visited == None:
-        #     visited = set()
-        #     stack = set()
+        visited = set()
+        values = self.__vertex_dict.values()
+        stack = []
         
-        # Go through the graph and check if nodes are visited. 
-        for v in graph:
-            # If they aren't but in the stack we keep checking, otherwise it contains cycle
-            if v not in visited:
-                if v in stack:
+        # Go through the graph and check if nodes are visited
+        for v in values:
+            if v in visited:
+                return False
+        # If they aren't, check them for cycles
+            else:
+                if self.cycle_helper(v, visited, stack) == True:
                     return True
-            stack.add(v)
-            
-            for n in v.get_neighbors():
-                if n not in visited:
-                    if contains_cycle(visited, ):
-                        pass
-            
+        
+        return False
     
     def topological_sort(self):
         """

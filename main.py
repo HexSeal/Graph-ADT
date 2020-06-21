@@ -28,11 +28,14 @@ if __name__ == '__main__':
     # graph.add_edge('C', 'A')
     print(graph.is_bipartite('A'))
     
-    # Show the connected components
+    # Show the connected components(Not currently working correctly)
     print("Edges: {}".format(graph.get_connected_components()))
     
     # Show a path from one vertex to another, should be ABDE
     # print("Path from vertex A to E: {}".format(graph.find_path_dfs_iter('A', 'E')))
+    
+    # Check if the graph contains a cycle, should return True
+    print("Contains cycle: {}".format(graph.contains_cycle()))
 
     # Or, read a graph in from a file
     # graph = read_graph_from_file('test_files/graph_small_directed.txt')
