@@ -377,7 +377,7 @@ class Graph:
 
     def cycle_helper(self, vertex, visited, stack):
         """Goes through the neighbors of a vertex and determines if it contains a cycle. 
-        This is better as a helper function because it needs to be run once for each vertex"""
+        This is better as a helper function because it needs to be run once for each vertex and it's easier to do that recursively"""
         
         cycle = False
         visited.add(vertex)
@@ -389,7 +389,7 @@ class Graph:
             if neighbor not in visited:
                 cycle = self.cycle_helper(neighbor, visited, stack)
             
-            # Otherwise, it contains a cycle
+            # Otherwise, if it finds a neighbor already in a stack, it's a cycle
             elif neighbor in stack:
                 return True
             
@@ -417,23 +417,39 @@ class Graph:
         
         return False
     
+    def top_sort_helper(self, vertex, visited, stack):
+        """Helper function to recursively check all neighbors of a vertex"""
+        visited.add(vertex)
+        neighbors = vertex.get_neighbors()
+        
+        for neighbor in neighbors:
+            if neighbor not in visited:
+                self.top_sort_helper(neighbor, visited, stack)
+        
+        stack.append(vertex)
+        return stack
+        
+    
     def topological_sort(self):
         """
         Return a valid ordering of vertices in a directed acyclic graph.
         If the graph contains a cycle, throw a ValueError.
         """
         # Create a stack to hold the vertex ordering.
-        stack = deque()
+        stack = []
+        visited = set()
+        vertices = self.__vertex_dict.values()
         
-        # TODO: For each unvisited vertex, execute a DFS from that vertex.
-        if self.contains_cycle():
-            raise ValueError("Contains Cycle")
-        
-        for vertex in self.__vertex_dict.keys():
-            dfs_traversal(vertex)
-            
-        
-        # TODO: On the way back up the recursion tree (that is, after visiting a 
+        # For each unvisited vertex, execute a DFS from that vertex.
+        # On the way back up the recursion tree (that is, after visiting a 
         # vertex's neighbors), add the vertex to the stack.
-        # TODO: Reverse the contents of the stack and return it as a valid ordering.
-        
+        if self.contains_cycle() == False:
+            for vertex in vertices:
+                if vertex not in visited:
+                    self.top_sort_helper(vertex, visited, stack) == True
+                    
+            # Reverse the contents of the stack and return it as a valid ordering.
+            order = list()
+            for _ in range(len(self.__vertex_dict)):
+                order.append(stack.pop().get_id())
+            return order

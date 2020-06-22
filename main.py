@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     # Create the graph
 
-    graph = Graph(is_directed=False)
+    graph = Graph(is_directed=True)
 
     # Add some vertices
     graph.add_vertex('A')
@@ -29,13 +29,16 @@ if __name__ == '__main__':
     print(graph.is_bipartite('A'))
     
     # Show the connected components(Not currently working correctly)
-    print("Edges: {}".format(graph.get_connected_components()))
+    # print("Edges: {}".format(graph.get_connected_components()))
     
     # Show a path from one vertex to another, should be ABDE
     # print("Path from vertex A to E: {}".format(graph.find_path_dfs_iter('A', 'E')))
     
     # Check if the graph contains a cycle, should return True
-    print("Contains cycle: {}".format(graph.contains_cycle()))
+    # print("Contains cycle: {}".format(graph.contains_cycle()))
+    
+    # Perform a topological sort on a directed graph, should be FG ABDEC
+    print("Toplogical sort: {}".format(graph.topological_sort()))
 
     # Or, read a graph in from a file
     # graph = read_graph_from_file('test_files/graph_small_directed.txt')
