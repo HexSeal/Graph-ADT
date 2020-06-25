@@ -284,41 +284,42 @@ class Graph:
         represented as a list of vertex ids.
         """
         visited = []
-        connections = []
         queue = deque()
+        final = []
         
-        keys = list(self.__vertex_dict.keys())
-        current = random.choice(keys)
-        visited.append(current)
-        queue.append(current)
-        
-        # While there's still vertexes in the queue
-        while queue:
-            # Get the next vertex
-            current = queue.pop()
-            connections.append(current)
-            
-            # Get the neighbors for the current node
-            neighbors = self.get_vertex(current).get_neighbors()
-            
-            # Go through all the neighbors and append them to the current vertex's list[Not working, returning list of vertices]
-            for neighbor in neighbors:
-                if neighbor.get_id() not in visited:
-                    visited.append(neighbor.get_id())
-                    connections.append(neighbor.get_id())
-            
-            # If we've gone through all the connections
-            if len(visited) == len(keys):
-                return connections
-            
-            not_visited = [vertex for vertex in keys if vertex not in visited]
-            
-            current = random.choice(not_visited)
-            
-            visited.append(current)
+        def connectionHelper(current):
+            connections = []
             queue.append(current)
         
-        return connections
+            # While there's still vertexes in the queue
+            while queue:
+                # Get the next vertex
+                current = queue.pop()
+                connections.append(current)
+                
+                # Get the neighbors for the current node
+                print('Current: {}'.format(current))
+                neighbors = self.get_vertex(current).get_neighbors()
+                print(neighbors)
+                
+                # Go through all the neighbors and append them to the current vertex's list[Not working, returning list of vertices]
+                for neighbor in neighbors:
+                    if neighbor.get_id() not in visited:
+                        queue.append(neighbor.get_id())
+                        visited.append(neighbor.get_id())
+                visited.append(current)
+                
+            return connections
+
+        
+        for vertex in self.get_vertices():
+            vert_id = vertex.get_id()
+            if vert_id not in visited:
+                connects = connectionHelper(vert_id)
+                visited.append(vert_id)
+                final.append(connects)
+        
+        return final
             
     
     def find_path_dfs_iter(self, start_id, target_id):

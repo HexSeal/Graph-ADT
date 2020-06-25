@@ -147,3 +147,37 @@ class WeightedGraph(Graph):
         #    vertex's distance, if it is lower than previous.
 
         # TODO: Return None if target vertex not found.
+        
+        
+        
+    def floyd_warshall(self):
+        """
+        Return the All-Pairs-Shortest-Paths dictionary, containing the shortest
+        paths from each vertex to each other vertex.
+        """
+        
+        dist = {}
+        vertex_ids = self.vertex_dict.keys()
+        
+        # Create a dictionary of all vertices and their possible connections
+        for v1 in vertex_ids:
+            dist[vertex1] = dict()
+            for v2 in vertex_ids:
+                dist[v1][v2] = WeightedGraph.INFINITY
+            dist[v1][v1] = 0
+        
+        # Add all edge weights to the dict
+        vertices = self.get_vertices()
+        
+        for vertex in vertices:
+            weighted_neighbors = vertex.get_neighbors_with_weights()
+            
+            for neighbor, weight in weighted_neighbors:
+                dist[vertex.get_id()][neighbor.get_id()] = weight
+        
+        for i in vertices:
+            for j in vertices:
+                for k in vertices:
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+                    
+        return dist

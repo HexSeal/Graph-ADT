@@ -29,7 +29,7 @@ if __name__ == '__main__':
     print(graph.is_bipartite('A'))
     
     # Show the connected components(Not currently working correctly)
-    # print("Edges: {}".format(graph.get_connected_components()))
+    print("Connected components: {}".format(graph.get_connected_components()))
     
     # Show a path from one vertex to another, should be ABDE
     # print("Path from vertex A to E: {}".format(graph.find_path_dfs_iter('A', 'E')))
@@ -38,20 +38,20 @@ if __name__ == '__main__':
     # print("Contains cycle: {}".format(graph.contains_cycle()))
     
     # Perform a topological sort on a directed graph, should be FG ABDEC
-    print("Toplogical sort: {}".format(graph.topological_sort()))
+    # print("Toplogical sort: {}".format(graph.topological_sort()))
 
     # Or, read a graph in from a file
     # graph = read_graph_from_file('test_files/graph_small_directed.txt')
 
     # Output the vertices & edges
     # Print vertices
-    print(f'The vertices are: {graph.get_vertices()} \n')
+    # print(f'The vertices are: {graph.get_vertices()} \n')
 
     # Print edges
-    print('The edges are:')
-    for vertex_obj in graph.get_vertices():
-        for neighbor_obj in vertex_obj.get_neighbors():
-            print(f'({vertex_obj.get_id()} , {neighbor_obj.get_id()})')
+    # print('The edges are:')
+    # for vertex_obj in graph.get_vertices():
+    #     for neighbor_obj in vertex_obj.get_neighbors():
+    #         print(f'({vertex_obj.get_id()} , {neighbor_obj.get_id()})')
 
     # # Search the graph
     # print('Performing BFS traversal...')
@@ -66,3 +66,11 @@ if __name__ == '__main__':
     # print('Finding all vertices distance 2 away...')
     # vertices_2_away = graph.find_vertices_n_away('A', 2)
     # print(vertices_2_away)
+    
+    # Find all vertices N distance away
+    # print('Finding all vertices distance 2 away...')
+    # vertices_2_away = graph.find_vertices_n_away('A', 2)
+    # print(vertices_2_away)
+    
+    # Test Floyd Warshall
+    
