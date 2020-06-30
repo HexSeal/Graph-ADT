@@ -19,13 +19,12 @@ class WeightedVertex(Vertex):
         vertex_obj (Vertex): An instance of Vertex to be stored as a neighbor.
         weight (int): The edge weight from self -> neighbor.
         """
-        # TODO: Implement this function.
-        pass
+        self.__neighbors_dict[vertex_obj.__id] = (vertex_obj, weight)
+        return self.__neighbors_dict
 
     def get_neighbors(self):
         """Return the neighbors of this vertex as a list of neighbor ids."""
-        # TODO: Implement this function.
-        pass
+        return list(self.__neighbors_dict.values())
 
     def get_neighbors_with_weights(self):
         """Return the neighbors of this vertex as a list of tuples of (neighbor_id, weight)."""
@@ -54,8 +53,9 @@ class WeightedGraph(Graph):
         Returns:
         Vertex: The new vertex object.
         """
-        # TODO: Implement this function.
-        pass
+        vertex = Vertex(vertex_id)
+        self.__vertex_dict[vertex_id] = vertex
+        return vertex
 
     def add_edge(self, vertex_id1, vertex_id2, weight):
         """
@@ -65,8 +65,14 @@ class WeightedGraph(Graph):
         vertex_id1 (string): The unique identifier of the first vertex.
         vertex_id2 (string): The unique identifier of the second vertex.
         """
-        # TODO: Implement this function.
-        pass
+        vertex1 = self.get_vertex(vertex_id1)
+        vertex2 = self.get_vertex(vertex_id2)
+        
+        # print("Vertex Id 1 {} Vertex Id 2 {}".format(vertex_id1, vertex_id2))
+        vertex1.add_neighbor(vertex2, weight)
+        
+        if self.__is_directed == False:
+            vertex2.add_neighbor(vertex1, weight)
     
     
     
