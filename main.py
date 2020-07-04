@@ -71,6 +71,3 @@ if __name__ == '__main__':
     # print('Finding all vertices distance 2 away...')
     # vertices_2_away = graph.find_vertices_n_away('A', 2)
     # print(vertices_2_away)
-    
-    # Test Floyd Warshall
-    
