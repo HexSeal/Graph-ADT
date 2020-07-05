@@ -163,17 +163,22 @@ class WeightedGraph(Graph):
         vertex_to_weight[start] = 0 
         MST_weight = 0
 
-        # TODO: Don't think this will handle every case as we don't update the neighbors when the edge weights are smaller
         # While `vertex_to_weight` is not empty:
         while vertex_to_weight:
         # 1. Get the minimum-weighted remaining vertex, remove it from the
         #    dictionary, & add its weight to the total MST weight
         # 2. Update that vertex's neighbors, if edge weights are smaller than
         #    previous weights
-            min_weight = min(vertex_to_weight.items(), key=lambda x:x[1])
+            min_weight = min(vertex_to_weight.items(), key=lambda x: x[1])
             current_vertex = min_weight[0]
             vertex_to_weight.pop(current_vertex, None)
             MST_weight += min_weight[1]
+            
+            for vertex in current_vertex.get_neighbors_with_weights():
+                neighbor, weight = vertex
+                if neighbor in vertex_to_weight:
+                    if weight < vertex_to_weight[neighbor]:
+                        vertex_to_weight[neighbor] = weight
 
         # Return total weight of MST
         return MST_weight
@@ -185,7 +190,7 @@ class WeightedGraph(Graph):
         Use Dijkstra's Algorithm to return the total weight of the shortest path
         from a start vertex to a destination.
         """
-        # TODO: Create a dictionary `vertex_to_distance` and initialize all
+        # Create a dictionary `vertex_to_distance` and initialize all
         # vertices to INFINITY - hint: use `float('inf')`
         vertex_to_distance = {}
         for vertex in self.vertex_dict.values():
