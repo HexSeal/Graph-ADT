@@ -39,7 +39,7 @@ def read_graph_from_file(filename):
     for _ in vertices:
         graph.add_vertex(_)
 
-    # TODO: Use the 3rd+ line to add the edges to the graph
+    # Use the 3rd+ line to add the edges to the graph
     for line in f:
         if line != '':
             print(line)
