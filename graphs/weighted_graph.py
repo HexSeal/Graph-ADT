@@ -9,7 +9,7 @@ class WeightedVertex(Vertex):
         vertex_id (string): A unique identifier to identify this vertex.
         """
         self.__id = vertex_id
-        self.__neighbors_dict = {} # id -> (obj, weight)
+        self.neighbors_dict = {} # id -> (obj, weight)
 
     def add_neighbor(self, vertex_obj, weight):
         """
@@ -19,8 +19,8 @@ class WeightedVertex(Vertex):
         vertex_obj (Vertex): An instance of Vertex to be stored as a neighbor.
         weight (int): The edge weight from self -> neighbor.
         """
-        self.__neighbors_dict[vertex_obj.__id] = (vertex_obj, weight)
-        return self.__neighbors_dict
+        self.neighbors_dict[vertex_obj.__id] = (vertex_obj, weight)
+        return self.neighbors_dict
 
     def get_neighbors(self):
         """Return the neighbors of this vertex as a list of neighbor ids."""
@@ -57,8 +57,8 @@ class WeightedGraph(Graph):
         Parameters:
         is_directed (boolean): Whether the graph is directed (edges go in only one direction).
         """
-        self.__vertex_dict = {} # id -> object
-        self.__is_directed = is_directed
+        self.vertex_dict = {} # id -> object
+        self.is_directed = is_directed
 
     def add_vertex(self, vertex_id):
         """
@@ -71,7 +71,7 @@ class WeightedGraph(Graph):
         Vertex: The new vertex object.
         """
         vertex = Vertex(vertex_id)
-        self.__vertex_dict[vertex_id] = vertex
+        self.vertex_dict[vertex_id] = vertex
         return vertex
 
     def add_edge(self, vertex_id1, vertex_id2, weight):
@@ -88,7 +88,7 @@ class WeightedGraph(Graph):
         # print("Vertex Id 1 {} Vertex Id 2 {}".format(vertex_id1, vertex_id2))
         vertex1.add_neighbor(vertex2, weight)
         
-        if self.__is_directed == False:
+        if self.is_directed == False:
             vertex2.add_neighbor(vertex1, weight)
     
     # Kruskal's Algorithm - Find Edges of a Minimum-Spanning Tree
@@ -195,6 +195,9 @@ class WeightedGraph(Graph):
         vertex_to_distance = {}
         for vertex in self.vertex_dict.values():
             vertex_to_distance[vertex] = float('inf')
+            
+        start_vertex = self.vertex_dict[start_id]
+        vertex_to_distance[start_vertex] = 0
 
         # While `vertex_to_distance` is not empty:
         while vertex_to_distance:

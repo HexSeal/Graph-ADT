@@ -454,3 +454,30 @@ class Graph:
             for _ in range(len(self.__vertex_dict)):
                 order.append(stack.pop().get_id())
             return order
+    
+    
+    
+    
+    # NP-hard heuristic problem
+    def greedy_coloring(self):
+        """Return a dictionary of vertex id -> color."""
+        vertex_id_color = {}
+        
+        # Establish the list of vertices
+        vertices = self.get_vertices()
+        seen = {}
+        
+
+        # Fill in the dictionary by visiting each vertex and checking the 
+        # colors of its neighbors, then assigning the “smallest” color which has 
+        # not yet been assigned.
+        for vertex in vertices:
+            q = deque()
+            q.append((vertex, 0))
+            while q:
+                curr_vert, curr_color = q.popleft()
+                for neighbor in curr_vert.get_neighbors():
+                    if neighbor in seen:
+                        pass
+
+        return vertex_id_color
