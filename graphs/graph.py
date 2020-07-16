@@ -57,6 +57,7 @@ class Graph:
         """
         self.__vertex_dict = {} # id -> object
         self.__is_directed = is_directed
+        # print("self.__is_directed: {}".format(self.__is_directed))
 
     def add_vertex(self, vertex_id):
         """
@@ -93,6 +94,7 @@ class Graph:
         vertex1.add_neighbor(vertex2)
         
         if self.__is_directed == False:
+            # print("is undirected")
             vertex2.add_neighbor(vertex1)
         
     def get_vertices(self):
@@ -203,10 +205,15 @@ class Graph:
         Returns:
         list<string>: All vertex ids that are `target_distance` away from the start vertex
         """
-        queue = deque()
-        visited = set()
+        if not self.contains_id(start_id):
+            raise KeyError("Start id not in graph")
         
+        queue = deque()
         queue.append(self.get_vertex(start_id))
+        
+        visited = set()
+        visited.add(start_id)
+        
         
         for _ in range(target_distance):
             for _ in range(len(queue)):
@@ -223,12 +230,13 @@ class Graph:
                 
         return found
 
-    def is_bipartite(self, start):
+    def is_bipartite(self):
         """
         Return True if the graph is bipartite, and False otherwise.
         """
         # Get the starting vertex
-        root = self.get_vertex(start)
+        vertex_list = self.get_vertices()
+        root = vertex_list[0]
         
         # Start the queue and first object
         queue = deque()

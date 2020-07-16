@@ -8,28 +8,42 @@ if __name__ == '__main__':
 
     # Create the graph
 
-    graph = Graph(is_directed=True)
+    # graph = Graph(is_directed=True)
 
-    # Add some vertices
-    graph.add_vertex('A')
-    graph.add_vertex('E')
-    graph.add_vertex('B')
-    graph.add_vertex('C')
-    graph.add_vertex('D')
-    graph.add_vertex('F')
-    graph.add_vertex('G')
+    # # Add some vertices
+    # graph.add_vertex('A')
+    # graph.add_vertex('E')
+    # graph.add_vertex('B')
+    # graph.add_vertex('C')
+    # graph.add_vertex('D')
+    # graph.add_vertex('F')
+    # graph.add_vertex('G')
 
-    # Add connections
-    graph.add_edge('A', 'B')
-    graph.add_edge('B', 'C')
-    graph.add_edge('B', 'D')
-    graph.add_edge('D', 'E')
-    graph.add_edge('F', 'G')
+    # # Add connections
+    # graph.add_edge('A', 'B')
+    # graph.add_edge('B', 'C')
+    # graph.add_edge('B', 'D')
+    # graph.add_edge('D', 'E')
+    # graph.add_edge('F', 'G')
     # graph.add_edge('C', 'A')
-    print(graph.is_bipartite('A'))
+    
+    # Or, read a graph in from a file
+    graph = read_graph_from_file('test_files/graph_small_undirected.txt')
+    
+    # Check if the graph is bipartite
+    print(graph.is_bipartite())
     
     # Show the connected components(Not currently working correctly)
-    print("Connected components: {}".format(graph.get_connected_components()))
+    # print("Connected components: {}".format(graph.get_connected_components()))
+    
+    # Find the neighbors
+    vert2 = graph.get_vertex('2')
+    neighbors =vert2.get_neighbors()
+    print(neighbors)
+    
+    vert4 = graph.get_vertex('4')
+    neighbors =vert4.get_neighbors()
+    print(neighbors)
     
     # Show a path from one vertex to another, should be ABDE
     # print("Path from vertex A to E: {}".format(graph.find_path_dfs_iter('A', 'E')))
@@ -40,8 +54,6 @@ if __name__ == '__main__':
     # Perform a topological sort on a directed graph, should be FG ABDEC
     # print("Toplogical sort: {}".format(graph.topological_sort()))
 
-    # Or, read a graph in from a file
-    # graph = read_graph_from_file('test_files/graph_small_directed.txt')
 
     # Output the vertices & edges
     # Print vertices

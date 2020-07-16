@@ -3,39 +3,39 @@ from graphs.graph import Graph
 from util.file_reader import read_graph_from_file
 
 
-class TestGraph(unittest.TestCase):
+# class TestGraph(unittest.TestCase):
 
-    def test_create_directed_graph(self):
-        """Create a graph."""
-        graph = Graph(is_directed=True)
-        vertex_a = graph.add_vertex('A')
-        vertex_b = graph.add_vertex('B')
-        vertex_c = graph.add_vertex('C')
-        graph.add_edge('A','B')
-        graph.add_edge('A','C')
-        graph.add_edge('B','C')
+    # def test_create_directed_graph(self):
+    #     """Create a graph."""
+    #     graph = Graph(is_directed=True)
+    #     vertex_a = graph.add_vertex('A')
+    #     vertex_b = graph.add_vertex('B')
+    #     vertex_c = graph.add_vertex('C')
+    #     graph.add_edge('A','B')
+    #     graph.add_edge('A','C')
+    #     graph.add_edge('B','C')
 
-        self.assertEqual(len(graph.get_vertices()), 3)
+    #     self.assertEqual(len(graph.get_vertices()), 3)
 
-        self.assertEqual(len(vertex_a.get_neighbors()), 2)
-        self.assertEqual(len(vertex_b.get_neighbors()), 1)
-        self.assertEqual(len(vertex_c.get_neighbors()), 0)
+    #     self.assertEqual(len(vertex_a.get_neighbors()), 2)
+    #     self.assertEqual(len(vertex_b.get_neighbors()), 1)
+    #     self.assertEqual(len(vertex_c.get_neighbors()), 0)
 
-    def test_create_undirected_graph(self):
-        """Create a graph."""
-        graph = Graph(is_directed=False)
-        vertex_a = graph.add_vertex('A')
-        vertex_b = graph.add_vertex('B')
-        vertex_c = graph.add_vertex('C')
-        graph.add_edge('A','B')
-        graph.add_edge('A','C')
-        graph.add_edge('B','C')
+    # def test_create_undirected_graph(self):
+    #     """Create a graph."""
+    #     graph = Graph(is_directed=False)
+    #     vertex_a = graph.add_vertex('A')
+    #     vertex_b = graph.add_vertex('B')
+    #     vertex_c = graph.add_vertex('C')
+    #     graph.add_edge('A','B')
+    #     graph.add_edge('A','C')
+    #     graph.add_edge('B','C')
 
-        self.assertEqual(len(graph.get_vertices()), 3)
+    #     self.assertEqual(len(graph.get_vertices()), 3)
 
-        self.assertEqual(len(vertex_a.get_neighbors()), 2)
-        self.assertEqual(len(vertex_b.get_neighbors()), 2)
-        self.assertEqual(len(vertex_c.get_neighbors()), 2)
+    #     self.assertEqual(len(vertex_a.get_neighbors()), 2)
+    #     self.assertEqual(len(vertex_b.get_neighbors()), 2)
+    #     self.assertEqual(len(vertex_c.get_neighbors()), 2)
 
 class TestReadGraphFromFile(unittest.TestCase):
     def test_read_directed_graph_from_file(self):
