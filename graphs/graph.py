@@ -13,8 +13,8 @@ class Vertex(object):
         Parameters:
         vertex_id (string): A unique identifier to identify this vertex.
         """
-        self.__id = vertex_id
-        self.__neighbors_dict = {} # id -> object
+        self.id = vertex_id
+        self.neighbors_dict = {} # id -> object
 
     def add_neighbor(self, vertex_obj):
         """
@@ -23,13 +23,13 @@ class Vertex(object):
         Parameters:
         vertex_obj (Vertex): An instance of Vertex to be stored as a neighbor.
         """
-        self.__neighbors_dict[vertex_obj.__id] = vertex_obj
-        return self.__neighbors_dict
+        self.neighbors_dict[vertex_obj.id] = vertex_obj
+        return self.neighbors_dict
 
     def __str__(self):
         """Output the list of neighbors of this vertex."""
-        neighbor_ids = list(self.__neighbors_dict.keys())
-        return f'{self.__id} adjacent to {neighbor_ids}'
+        neighbor_ids = list(self.neighbors_dict.keys())
+        return f'{self.id} adjacent to {neighbor_ids}'
 
     def __repr__(self):
         """Output the list of neighbors of this vertex."""
@@ -37,11 +37,11 @@ class Vertex(object):
 
     def get_neighbors(self):
         """Return the neighbors of this vertex."""
-        return list(self.__neighbors_dict.values())
+        return list(self.neighbors_dict.values())
 
     def get_id(self):
         """Return the id of this vertex."""
-        return self.__id
+        return self.id
 
 
 class Graph:
@@ -55,9 +55,9 @@ class Graph:
         Parameters:
         is_directed (boolean): Whether the graph is directed (edges go in only one direction).
         """
-        self.__vertex_dict = {} # id -> object
-        self.__is_directed = is_directed
-        # print("self.__is_directed: {}".format(self.__is_directed))
+        self.vertex_dict = {} # id -> object
+        self.is_directed = is_directed
+        # print("self.is_directed: {}".format(self.is_directed))
 
     def add_vertex(self, vertex_id):
         """
@@ -69,15 +69,15 @@ class Graph:
         Returns:
         Vertex: The new vertex object.
         """
-        self.__vertex_dict[vertex_id] = Vertex(vertex_id)
-        return self.__vertex_dict[vertex_id]
+        self.vertex_dict[vertex_id] = Vertex(vertex_id)
+        return self.vertex_dict[vertex_id]
         
     def get_vertex(self, vertex_id):
         """Return the vertex if it exists."""
-        if vertex_id not in self.__vertex_dict:
+        if vertex_id not in self.vertex_dict:
             return None
 
-        vertex_obj = self.__vertex_dict[vertex_id]
+        vertex_obj = self.vertex_dict[vertex_id]
         return vertex_obj
 
     def add_edge(self, vertex_id1, vertex_id2):
@@ -93,7 +93,7 @@ class Graph:
         # print("Vertex Id 1 {} Vertex Id 2 {}".format(vertex_id1, vertex_id2))
         vertex1.add_neighbor(vertex2)
         
-        if self.__is_directed == False:
+        if self.is_directed == False:
             # print("is undirected")
             vertex2.add_neighbor(vertex1)
         
@@ -104,10 +104,10 @@ class Graph:
         Returns:
         List<Vertex>: The vertex objects contained in the graph.
         """
-        return list(self.__vertex_dict.values())
+        return list(self.vertex_dict.values())
 
     def contains_id(self, vertex_id):
-        return vertex_id in self.__vertex_dict
+        return vertex_id in self.vertex_dict
 
     def __str__(self):
         """Return a string representation of the graph."""
@@ -209,26 +209,31 @@ class Graph:
             raise KeyError("Start id not in graph")
         
         queue = deque()
-        queue.append(self.get_vertex(start_id))
+        queue.append((start_id, 0))
         
         visited = set()
         visited.add(start_id)
         
-        
-        for _ in range(target_distance):
-            for _ in range(len(queue)):
-                vertex = queue.pop()
-                if vertex not in visited:
-                    for neighbor in vertex.get_neighbors():
-                        queue.appendleft(neighbor)
-                    visited.add(vertex)
-        
-        found = []
-        for vertex in queue:
-            if vertex not in visited and vertex.get_id() not in found:
-                found.append(vertex.get_id())
+        solution = []
+
+        while queue:
+            # Visit the next object after the first
+            current_vert = queue.pop()
+            
+            # Get the neighbors
+            neighbors = self.get_vertex(current_vert[0]).get_neighbors()
+            
+            # If the vertex is at the target distance, add it to the solution
+            if current_vert[1] == target_distance:
+                solution.append(current_vert[0])
                 
-        return found
+            # Check the current vertex's neighbors
+            for neighbor in neighbors:
+                if neighbor.get_id() not in visited:
+                    queue.append((neighbor.get_id(), current_vert[1] + 1))
+                    visited.add(neighbor.get_id())
+        
+        return solution
 
     def is_bipartite(self):
         """
@@ -412,7 +417,7 @@ class Graph:
         Return True if the directed graph contains a cycle, False otherwise.
         """
         visited = set()
-        values = self.__vertex_dict.values()
+        values = self.vertex_dict.values()
         stack = []
         
         # Go through the graph and check if nodes are visited
@@ -447,7 +452,7 @@ class Graph:
         # Create a stack to hold the vertex ordering.
         stack = []
         visited = set()
-        vertices = self.__vertex_dict.values()
+        vertices = self.vertex_dict.values()
         
         # For each unvisited vertex, execute a DFS from that vertex.
         # On the way back up the recursion tree (that is, after visiting a 
@@ -459,7 +464,7 @@ class Graph:
                     
             # Reverse the contents of the stack and return it as a valid ordering.
             order = list()
-            for _ in range(len(self.__vertex_dict)):
+            for _ in range(len(self.vertex_dict)):
                 order.append(stack.pop().get_id())
             return order
     

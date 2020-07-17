@@ -45,11 +45,11 @@ def read_graph_from_file(filename):
             curr = line.replace('(', '')
             curr = curr.replace(')', '').strip()
             curr = curr.split(",")
-            print("Current line: {}".format(curr))
+            # print("Current line: {}".format(curr))
             
             if curr:
-                vert1 = graph.add_vertex(curr[0])
-                vert2 = graph.add_vertex(curr[1])
+                vert1 = graph.get_vertex(curr[0])
+                vert2 = graph.get_vertex(curr[1])
                 # print("Vert 1: {} Vert 2: {}".format(vert1, vert2))
                 
                 graph.add_edge(vert1.get_id(), vert2.get_id())
